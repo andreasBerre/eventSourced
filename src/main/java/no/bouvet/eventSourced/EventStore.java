@@ -3,7 +3,10 @@ package no.bouvet.eventSourced;
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class EventStore extends UntypedActor{
 
