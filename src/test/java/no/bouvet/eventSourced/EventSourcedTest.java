@@ -19,16 +19,20 @@ import static junit.framework.Assert.assertTrue;
 
 public class EventSourcedTest extends EventSourcedTestKit{
 
-    private TestActorRef<EventStore> eventStoreRef;
+    private TestActorRef<Actor> eventStoreRef;
     private TestActorRef<Actor> presentasjonProjeksjonRef;
+    private TestActorRef<Actor> antallIkkeMottProjeksjonRef;
 
     @Before
     public void setUp() throws Exception {
         Props eventStoreProps = new Props(EventStore.class);
         eventStoreRef = TestActorRef.create(_system, eventStoreProps, "eventStoreRef");
 
-        Props projeksjonProps = new Props(new PresentasjonProjeksjonFactory(eventStoreRef));
-        presentasjonProjeksjonRef = TestActorRef.create(_system, projeksjonProps, "presentatasjonProjeksjon");
+        Props presentasjonProjeksjonProps = new Props(new PresentasjonProjeksjonFactory(eventStoreRef));
+        presentasjonProjeksjonRef = TestActorRef.create(_system, presentasjonProjeksjonProps, "presentasjonProjeksjon");
+
+        Props ikkeMottProjeksjonProps = new Props(new AntallIkkeMottProjeksjonFactory(eventStoreRef));
+        antallIkkeMottProjeksjonRef = TestActorRef.create(_system, ikkeMottProjeksjonProps, "antallIkkeMottProjeksjon");
     }
 
     @Test
@@ -44,8 +48,8 @@ public class EventSourcedTest extends EventSourcedTestKit{
     }
 
     @Test
-    @Ignore //TODO: fikse denne testen
-    public void testNyeDeltagerePåPresentasjonFinnesIProjeksjon() throws Exception {
+    @Ignore //TODO: fikse denne testen, må utvide PresentasjonProjeksjon for å håndtere DeltagerLagtTil
+    public void testNyeDeltagerePaPresentasjonFinnesIProjeksjon() throws Exception {
         eventStoreRef.tell(new PresentasjonOpprettet("Databaser er for pyser!"), null);
         eventStoreRef.tell(new DeltagerLagtTil("Databaser er for pyser!", "Andreas Berre"), null);
         eventStoreRef.tell(new DeltagerLagtTil("Databaser er for pyser!", "Idar Borlaug"), null);
@@ -58,5 +62,23 @@ public class EventSourcedTest extends EventSourcedTestKit{
         assertTrue(((List) result).contains("Andreas Berre"));
         assertTrue(((List) result).contains("Idar Borlaug"));
     }
+
+    @Test
+    @Ignore //TODO: fikse denne testen, må lage en ny projeksjon for å holde styr på hvor mange som ikke møter til hver presentasjon
+    public void testAntallDeltagereIkkeMott() throws Exception {
+        eventStoreRef.tell(new PresentasjonOpprettet("Databaser er for pyser!"), null);
+        eventStoreRef.tell(new DeltagerLagtTil("Databaser er for pyser!", "Andreas Berre"), null);
+        eventStoreRef.tell(new DeltagerLagtTil("Databaser er for pyser!", "Idar Borlaug"), null);
+        eventStoreRef.tell(new DeltagerLagtTil("Databaser er for pyser!", "Endre Stølsvik"), null);
+        eventStoreRef.tell(new DeltagerMotte("Databaser er for pyser!", "Idar Borlaug"), null);
+        eventStoreRef.tell(new DeltagerMotte("Databaser er for pyser!", "Andreas Berre"), null);
+
+        Future<Object> getAntallIkkeMott =  ask (antallIkkeMottProjeksjonRef, new GetAntallIkkeMott("Databaser er for pyser!"), 3000);
+        Object result = Await.result(getAntallIkkeMott, Duration.create(3, TimeUnit.SECONDS));
+
+        assertTrue(result instanceof Integer);
+        assertEquals(1, result);
+    }
+
 
 }
