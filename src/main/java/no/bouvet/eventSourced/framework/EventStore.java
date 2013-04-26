@@ -1,7 +1,8 @@
-package no.bouvet.eventSourced;
+package no.bouvet.eventSourced.framework;
 
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
+import no.bouvet.eventSourced.Aggregate;
 
 import java.util.HashMap;
 import java.util.HashSet;

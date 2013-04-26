@@ -3,6 +3,7 @@ package no.bouvet.eventSourced;
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 import com.google.common.collect.ImmutableList;
+import no.bouvet.eventSourced.framework.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;

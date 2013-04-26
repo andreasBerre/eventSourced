@@ -3,6 +3,7 @@ package no.bouvet.eventSourced;
 import akka.actor.Actor;
 import akka.actor.Props;
 import akka.testkit.TestActorRef;
+import no.bouvet.eventSourced.framework.EventStore;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

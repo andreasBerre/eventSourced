@@ -1,5 +1,7 @@
 package no.bouvet.eventSourced;
 
+import no.bouvet.eventSourced.framework.Event;
+
 public class DeltagerLagtTil implements Event {
     private final String presentasjonTittel;
     private final String deltagerNavn;
