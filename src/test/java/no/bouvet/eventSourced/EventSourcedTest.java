@@ -20,22 +20,23 @@ import static junit.framework.Assert.assertTrue;
 public class EventSourcedTest extends EventSourcedTestKit{
 
     private TestActorRef<EventStore> eventStoreRef;
-    private TestActorRef<Actor> presentationProjectionRef;
+    private TestActorRef<Actor> presentasjonProjeksjonRef;
 
     @Before
     public void setUp() throws Exception {
-        eventStoreRef = TestActorRef.create(_system, new Props(EventStore.class), "eventStoreRef");
+        Props eventStoreProps = new Props(EventStore.class);
+        eventStoreRef = TestActorRef.create(_system, eventStoreProps, "eventStoreRef");
 
-        Props props = new Props(new PresentationProjectionFactory(eventStoreRef));
-        presentationProjectionRef = TestActorRef.create(_system, props, "presentationProjection");
+        Props projeksjonProps = new Props(new PresentasjonProjeksjonFactory(eventStoreRef));
+        presentasjonProjeksjonRef = TestActorRef.create(_system, projeksjonProps, "presentatasjonProjeksjon");
     }
 
     @Test
-    public void testCreatedPresentationsAreProjected() throws Exception {
-        eventStoreRef.tell(new PresentationCreated("Databaser er for pyser!"));
+    public void testOpprettedePresentasjonerFinnesIProjeksjon() throws Exception {
+        eventStoreRef.tell(new PresentasjonOpprettet("Databaser er for pyser!"), null);
 
-        Future<Object> getPresentationTitles =  ask (presentationProjectionRef, new GetPresentationTitles(), 3000);
-        Object result = Await.result(getPresentationTitles, Duration.create(3, TimeUnit.SECONDS));
+        Future<Object> getPresentasjonTittel =  ask (presentasjonProjeksjonRef, new GetPresentasjonTittel(), 3000);
+        Object result = Await.result(getPresentasjonTittel, Duration.create(3, TimeUnit.SECONDS));
 
         assertTrue(result instanceof List);
         assertEquals(1, ((List) result).size());
@@ -43,14 +44,14 @@ public class EventSourcedTest extends EventSourcedTestKit{
     }
 
     @Test
-    @Ignore //TODO:fikse denne testen
-    public void testNewAttendingPresentationIsProjected() throws Exception {
-        eventStoreRef.tell(new PresentationCreated("Databaser er for pyser!"));
-        eventStoreRef.tell(new PresentationAttendeeAdded("Databaser er for pyser!", "Andreas Berre"));
-        eventStoreRef.tell(new PresentationAttendeeAdded("Databaser er for pyser!", "Idar Borlaug"));
+    @Ignore //TODO: fikse denne testen
+    public void testNyeDeltagerePåPresentasjonFinnesIProjeksjon() throws Exception {
+        eventStoreRef.tell(new PresentasjonOpprettet("Databaser er for pyser!"), null);
+        eventStoreRef.tell(new DeltagerLagtTil("Databaser er for pyser!", "Andreas Berre"), null);
+        eventStoreRef.tell(new DeltagerLagtTil("Databaser er for pyser!", "Idar Borlaug"), null);
 
-        Future<Object> getPresentationAttendees =  ask (presentationProjectionRef, new GetPresentationAttendees("Databaser er for pyser!"), 3000);
-        Object result = Await.result(getPresentationAttendees, Duration.create(3, TimeUnit.SECONDS));
+        Future<Object> getPresentasjonDeltagere =  ask (presentasjonProjeksjonRef, new GetPresentasjonDeltagere("Databaser er for pyser!"), 3000);
+        Object result = Await.result(getPresentasjonDeltagere, Duration.create(3, TimeUnit.SECONDS));
 
         assertTrue(result instanceof List);
         assertEquals(2, ((List) result).size());
