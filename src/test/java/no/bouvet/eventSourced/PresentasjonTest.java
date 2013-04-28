@@ -40,8 +40,8 @@ public class PresentasjonTest extends EventSourcedTestKit{
     public void testOpprettedePresentasjonerFinnesIProjeksjon() throws Exception {
         eventStoreRef.tell(new PresentasjonOpprettet("Databaser er for pyser!"), null);
 
-        Future<Object> getPresentasjonTittel =  ask (presentasjonProjeksjonRef, new GetPresentasjonTittel(), 3000);
-        Object result = Await.result(getPresentasjonTittel, Duration.create(3, TimeUnit.SECONDS));
+        Future<Object> getPresentasjonTitler =  ask (presentasjonProjeksjonRef, new GetPresentasjonTitler(), 3000);
+        Object result = Await.result(getPresentasjonTitler, Duration.create(3, TimeUnit.SECONDS));
 
         assertTrue(result instanceof List);
         assertEquals(1, ((List) result).size());

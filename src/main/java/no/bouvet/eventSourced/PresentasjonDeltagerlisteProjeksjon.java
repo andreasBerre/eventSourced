@@ -30,7 +30,7 @@ public class PresentasjonDeltagerlisteProjeksjon extends UntypedActor {
     public void onReceive(Object message) throws Exception {
         if (message instanceof PresentasjonOpprettet)
             handlePresentasjonOpprettet((PresentasjonOpprettet) message);
-        else if (message instanceof GetPresentasjonTittel)
+        else if (message instanceof GetPresentasjonTitler)
             sender().tell(ImmutableList.copyOf(presentasjoner.keySet()), self());
     }
 
