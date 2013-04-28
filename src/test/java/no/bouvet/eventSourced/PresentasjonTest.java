@@ -18,7 +18,7 @@ import static akka.pattern.Patterns.ask;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
-public class EventSourcedTest extends EventSourcedTestKit{
+public class PresentasjonTest extends EventSourcedTestKit{
 
     private TestActorRef<Actor> eventStoreRef;
     private TestActorRef<Actor> presentasjonProjeksjonRef;
