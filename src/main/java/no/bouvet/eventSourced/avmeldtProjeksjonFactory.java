@@ -6,8 +6,8 @@ import akka.actor.UntypedActorFactory;
 import akka.testkit.TestActorRef;
 
 //TODO: Gjøre ferdig, denne klassen skal lage antallIkkeMøtt projeksjonen
-public class AntallIkkeMottProjeksjonFactory implements UntypedActorFactory {
-    public AntallIkkeMottProjeksjonFactory(ActorRef eventStoreRef) {
+public class avmeldtProjeksjonFactory implements UntypedActorFactory {
+    public avmeldtProjeksjonFactory(ActorRef eventStoreRef) {
     }
 
     @Override

@@ -22,7 +22,7 @@ public class PresentasjonTest extends EventSourcedTestKit{
 
     private TestActorRef<Actor> eventStoreRef;
     private TestActorRef<Actor> presentasjonProjeksjonRef;
-    private TestActorRef<Actor> antallIkkeMottProjeksjonRef;
+    private TestActorRef<Actor> avmeldtProjeksjonRef;
 
     @Before
     public void setUp() throws Exception {
@@ -32,8 +32,8 @@ public class PresentasjonTest extends EventSourcedTestKit{
         Props presentasjonProjeksjonProps = new Props(new PresentasjonProjeksjonFactory(eventStoreRef));
         presentasjonProjeksjonRef = TestActorRef.create(_system, presentasjonProjeksjonProps, "presentasjonProjeksjon");
 
-        Props ikkeMottProjeksjonProps = new Props(new AntallIkkeMottProjeksjonFactory(eventStoreRef));
-        antallIkkeMottProjeksjonRef = TestActorRef.create(_system, ikkeMottProjeksjonProps, "antallIkkeMottProjeksjon");
+        Props avmeldtProjeksjonProps = new Props(new avmeldtProjeksjonFactory(eventStoreRef));
+        avmeldtProjeksjonRef = TestActorRef.create(_system, avmeldtProjeksjonProps, "avmeldtProjeksjon");
     }
 
     @Test
@@ -49,11 +49,11 @@ public class PresentasjonTest extends EventSourcedTestKit{
     }
 
     @Test
-    @Ignore //TODO: fikse denne testen, må utvide PresentasjonProjeksjon for å håndtere DeltagerLagtTil
+    @Ignore //TODO: fikse denne testen, må utvide PresentasjonProjeksjon for å håndtere DeltagerPameldt
     public void testNyeDeltagerePaPresentasjonFinnesIProjeksjon() throws Exception {
         eventStoreRef.tell(new PresentasjonOpprettet("Databaser er for pyser!"), null);
-        eventStoreRef.tell(new DeltagerLagtTil("Databaser er for pyser!", "Andreas Berre"), null);
-        eventStoreRef.tell(new DeltagerLagtTil("Databaser er for pyser!", "Idar Borlaug"), null);
+        eventStoreRef.tell(new DeltagerPameldt("Databaser er for pyser!", "Andreas Berre"), null);
+        eventStoreRef.tell(new DeltagerPameldt("Databaser er for pyser!", "Idar Borlaug"), null);
 
         Future<Object> getPresentasjonDeltagere =  ask (presentasjonProjeksjonRef, new GetPresentasjonDeltagere("Databaser er for pyser!"), 3000);
         Object result = Await.result(getPresentasjonDeltagere, Duration.create(3, TimeUnit.SECONDS));
@@ -65,17 +65,16 @@ public class PresentasjonTest extends EventSourcedTestKit{
     }
 
     @Test
-    @Ignore //TODO: fikse denne testen, må lage en ny projeksjon for å holde styr på hvor mange som ikke møter til hver presentasjon
+    @Ignore //TODO: fikse denne testen, må lage en ny projeksjon for å holde styr på hvor mange som melder seg av hver presentasjon
     public void testAntallDeltagereIkkeMott() throws Exception {
         eventStoreRef.tell(new PresentasjonOpprettet("Databaser er for pyser!"), null);
-        eventStoreRef.tell(new DeltagerLagtTil("Databaser er for pyser!", "Andreas Berre"), null);
-        eventStoreRef.tell(new DeltagerLagtTil("Databaser er for pyser!", "Idar Borlaug"), null);
-        eventStoreRef.tell(new DeltagerLagtTil("Databaser er for pyser!", "Endre Stølsvik"), null);
-        eventStoreRef.tell(new DeltagerMotte("Databaser er for pyser!", "Idar Borlaug"), null);
-        eventStoreRef.tell(new DeltagerMotte("Databaser er for pyser!", "Andreas Berre"), null);
+        eventStoreRef.tell(new DeltagerPameldt("Databaser er for pyser!", "Endre Stølsvik"), null);
+        eventStoreRef.tell(new DeltagerPameldt("Databaser er for pyser!", "Andreas Berre"), null);
+        eventStoreRef.tell(new DeltagerPameldt("Databaser er for pyser!", "Idar Borlaug"), null);
+        eventStoreRef.tell(new DeltagerAvmeldt("Databaser er for pyser!", "Endre Stølsvik"), null);
 
-        Future<Object> getAntallIkkeMott =  ask (antallIkkeMottProjeksjonRef, new GetAntallIkkeMott("Databaser er for pyser!"), 3000);
-        Object result = Await.result(getAntallIkkeMott, Duration.create(3, TimeUnit.SECONDS));
+        Future<Object> getAntallAvmeldt =  ask (avmeldtProjeksjonRef, new GetAntallAvmeldt("Databaser er for pyser!"), 3000);
+        Object result = Await.result(getAntallAvmeldt, Duration.create(3, TimeUnit.SECONDS));
 
         assertTrue(result instanceof Integer);
         assertEquals(1, result);

@@ -1,10 +1,12 @@
 package no.bouvet.eventSourced;
 
-public class DeltagerMotte {
+import no.bouvet.eventSourced.framework.Event;
+
+public class DeltagerPameldt implements Event {
     private final String presentasjonTittel;
     private final String deltagerNavn;
 
-    public DeltagerMotte(String presentasjonTittel, String deltagerNavn) {
+    public DeltagerPameldt(String presentasjonTittel, String deltagerNavn) {
         this.presentasjonTittel = presentasjonTittel;
         this.deltagerNavn = deltagerNavn;
     }
@@ -15,5 +17,10 @@ public class DeltagerMotte {
 
     public String getDeltagerNavn() {
         return deltagerNavn;
+    }
+
+    @Override
+    public Aggregate getAggregate() {
+        return Aggregate.PRESENTASJON;
     }
 }
