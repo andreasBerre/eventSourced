@@ -6,6 +6,8 @@ Til alle dere andre som også har sett sannheten og lyset:
 *   [Rinat Abdullins blogg, mye bra](http://abdullin.com/) 
 *   [Google group for CQRS og DDD:](https://groups.google.com/forum/?fromgroups#!forum/dddcqrs) 
 *   [Akka google group](https://groups.google.com/forum/?fromgroups#!forum/akka-user) 
+*   [Akka](http://akka.io/)
+*   [Akka eventsourced](https://github.com/eligosource/eventsourced)
 
 * * *
 Noen tips og regler vi har kommet frem til etter en hel masse roting (NB: Sikkert noen som er uenig i en eller flere av disse, dette er vår take hittil)
