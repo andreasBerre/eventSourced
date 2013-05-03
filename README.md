@@ -12,7 +12,7 @@ Noen tips og regler vi har kommet frem til etter en hel masse roting (NB: Sikker
 
 *   Eventer skal være en minimalistisk beskrivelse av en hendelse som endrer tilstanden i din applikasjon, og ikke inneholde implementasjon-spesifikk informasjon.
 *   Motstå fristelsen til å lage generelle hendelser, f.eks. av typen " BrukerInfoEndret" med verdi som beskriver hvilket felt det gjelder.
-*   Prøv å unngå CRUD events; meldFlytting er bedre enn oppdaterAddresse.
+*   Prøv å unngå CRUD events/commands; meldFlytting -> flyttingMeldt er bedre enn oppdaterAddresse -> adresseOppdatert.
 *   En projeksjon skal bare lytte til eventer i ett aggregat.
 *   Sagaer og projeksjoner skal bare motta eventer fra event-store, aldri direkte.
 *   Event-store skal bare leses sekvensielt for å publisere til projeksjoner eller sager, ingen ad-hock spørringer er lov.
