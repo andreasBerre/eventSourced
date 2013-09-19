@@ -2,6 +2,7 @@ Eksempel på implementering av CQRS med Event Sourcing i Akka. Noen todos er pla
 
 * * *
 Til alle dere andre som også har sett sannheten og lyset:
+*   [Slides fra presentasjon på javaBin] (https://docs.google.com/presentation/d/1jz0fmYskG2-pmtRadfRwq8vxqqBApyrACWkVEZj2Hf8/edit?usp=sharing)
 *   [Bra gjennomgang på MSDN](http://msdn.microsoft.com/en-us/library/jj554200.aspx) 
 *   [Rinat Abdullins blogg, mye bra](http://abdullin.com/) 
 *   [Google group for CQRS og DDD:](https://groups.google.com/forum/?fromgroups#!forum/dddcqrs) 
