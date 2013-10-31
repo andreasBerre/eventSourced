@@ -17,6 +17,7 @@ Noen tips og regler vi har kommet frem til etter en hel masse roting (NB: Sikker
 *   Event-navnet skal beskrive intensjonen bak endringen i tilstand. Motstå fristelsen til å lage generelle hendelser, f.eks. av typen " BrukerInfoEndret" med verdi som beskriver hvilket felt det gjelder.
 *   Prøv å unngå CRUD-style events/commands; meldFlytting -> flyttingMeldt er bedre enn oppdaterAddresse -> adresseOppdatert.
 *   En projeksjon skal bare lytte til eventer i ett aggregat.
+*   Commands skal inneholde så lite informasjon som mulig. Det er command handlerens oppgave å f.eks. slå opp i projeksjoner for å skaffe det nødvendige for utførelse, ikke controlleren.
 *   Sagaer og projeksjoner skal bare motta eventer fra event-store, aldri direkte.
 *   Event-store skal bare leses sekvensielt for å publisere til projeksjoner eller sager, ingen ad-hock spørringer er lov.
 *   Unngå gjenbruk, ikke eksponer eventer direkte gjennom projeksjoner. Lag heller nye objekter tilpasset det spesifikke formålet.
